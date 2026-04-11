@@ -163,7 +163,19 @@ def maybe_run_codex(project_dir: Path) -> None:
     autostart = os.environ.get("CODEX_AUTOSTART", "0").strip()
     if autostart not in {"1", "true", "True", "yes", "on"}:
         print("기본 설정에서는 Codex 자동 실행을 하지 않습니다.")
-        print(f"필요하면 프로젝트 폴더로 이동한 뒤 수동으로 실행하세요: cd {project_dir} && codex")
+        print("다음 순서로 진행하세요:")
+        print(f"1. cd {project_dir}")
+        print("2. 질문형 초기 설정 실행")
+        if os.name == "nt":
+            print(r"   scripts\project-intake.bat")
+            print(r"3. 검증 하네스 확인")
+            print(r"   scripts\check.bat")
+        else:
+            print("   sh scripts/project-intake.sh")
+            print("3. 검증 하네스 확인")
+            print("   sh scripts/check.sh")
+        print("4. Codex 실행")
+        print("   codex")
         return
 
     codex_path = shutil.which("codex")
@@ -177,7 +189,15 @@ def maybe_run_codex(project_dir: Path) -> None:
         run([codex_path], cwd=project_dir, input_text=prompt)
     except Exception as exc:
         print(f"Codex 자동 실행에 실패했습니다: {exc}")
-        print("프로젝트 생성은 완료되었으니, 프로젝트 폴더에서 codex를 수동으로 실행하세요.")
+        print("프로젝트 생성은 완료되었습니다. 아래 순서로 수동 진행하세요:")
+        print(f"1. cd {project_dir}")
+        if os.name == "nt":
+            print(r"2. scripts\project-intake.bat")
+            print(r"3. scripts\check.bat")
+        else:
+            print("2. sh scripts/project-intake.sh")
+            print("3. sh scripts/check.sh")
+        print("4. codex")
 
 
 def main() -> int:
