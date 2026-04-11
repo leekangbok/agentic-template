@@ -16,6 +16,7 @@
 - 아키텍처 문서: `docs/architecture.md`
 - 컨텍스트 갱신 스크립트: `scripts/auto_codex_context.py`
 - 실행 헬퍼 스크립트: `scripts/run.sh`, `scripts/run.bat`
+- 프로젝트 생성 스크립트: `scripts/create-project.sh`, `scripts/create-project.bat`, `scripts/create-project.ps1`
 - 플레이스홀더 코드 및 테스트 디렉터리: `src/`, `tests/`
 
 ## 아직 비어 있는 정보
@@ -32,6 +33,7 @@
 - 실제 프로젝트 메타데이터가 아직 채워지지 않았음
 - `src/`, `tests/`는 아직 플레이스홀더 상태임
 - 표준 명령이 아직 확정되지 않았음
+- 템플릿 생성 스크립트 추가 후 사용 문서를 함께 유지해야 함
 
 ## 다음 권장 작업
 
@@ -45,12 +47,12 @@
 <!-- AUTO-GENERATED-START -->
 이 블록은 `python scripts/auto_codex_context.py` 실행 시 갱신됩니다.
 
-- 마지막 갱신 시각: 2026-04-11 06:13 UTC
+- 마지막 갱신 시각: 2026-04-11 06:26 UTC
 - `README.md` 존재 여부: yes
 - `docs/architecture.md` 존재 여부: yes
 - `src/` 파일 수: 2
 - `tests/` 파일 수: 2
-- 완료된 작업 수: 0/16
+- 완료된 작업 수: 0/17
 <!-- AUTO-GENERATED-END -->
 
 ## 세션 메모

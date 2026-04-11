@@ -28,6 +28,10 @@
   `CONTEXT.md`의 자동 생성 상태 블록을 갱신하는 스크립트
 - `scripts/run.sh`, `scripts/run.bat`
   작업 시작 전 컨텍스트를 갱신하는 헬퍼 스크립트
+- `scripts/create-project.sh`, `scripts/create-project.bat`, `scripts/create-project.ps1`
+  이 템플릿으로 새 프로젝트를 생성하는 스캐폴딩 스크립트
+- `scripts/create_project.py`
+  새 프로젝트 생성의 실제 공통 로직
 - `src/`
   애플리케이션 소스 코드
 - `tests/`
@@ -80,6 +84,23 @@ macOS / Linux / WSL:
 sh scripts/run.sh
 ```
 
+새 프로젝트 생성:
+
+macOS / Linux / WSL:
+
+```sh
+sh scripts/create-project.sh my-app
+```
+
+Windows:
+
+```bat
+scripts\create-project.bat my-app
+```
+
+원격 URL을 자동으로 찾지 못하면 두 번째 인자로 템플릿 저장소 URL을 넘기거나 `TEMPLATE_REPO_URL` 환경 변수를 사용할 수 있습니다. Windows에서는 `.bat`이 내부적으로 `PowerShell` 스크립트를 호출합니다.
+테스트 용도로 Codex 자동 실행을 끄고 싶다면 `CODEX_AUTOSTART=0` 환경 변수를 사용하면 됩니다.
+
 ## 실제 프로젝트에서 먼저 채울 항목
 
 ### 프로젝트 기본 정보
@@ -114,6 +135,19 @@ sh scripts/run.sh
 2. `docs/architecture.md`에 모듈 경계를 정리합니다.
 3. `TASKS.md`에 첫 실제 작업을 등록합니다.
 4. 진행 상황에 맞춰 `CONTEXT.md`를 갱신합니다.
+
+## 생성 스크립트 동작
+
+`create-project` 스크립트는 아래 순서로 동작합니다.
+
+1. 템플릿 저장소를 새 폴더로 clone
+2. 기존 `.git` 제거
+3. 새 저장소 초기화
+4. `README.md` 제목을 프로젝트명으로 교체
+5. `CONTEXT.md`, `TASKS.md`를 새 프로젝트 기준으로 초기화
+6. `python scripts/auto_codex_context.py` 실행
+7. Git 사용자 정보가 있으면 첫 커밋 생성
+8. `codex` 명령이 있으면 세션 시작
 
 ## 유지보수 메모
 
