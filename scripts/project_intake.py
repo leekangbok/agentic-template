@@ -38,7 +38,7 @@ def infer_check_steps(
     if "python" in lang or "fastapi" in fw or "pytest" in test:
         return [
             ("lint", ["ruff", "check", "."]),
-            ("typecheck", ["mypy", "src"]),
+            ("typecheck", ["mypy", "backend"]),
             ("test", ["pytest", "-q"]),
         ]
 
@@ -180,23 +180,28 @@ def main() -> int:
 
     language = ask(
         "사용 언어",
-        "Python",
-        "프로젝트의 주력 프로그래밍 언어입니다. AI의 코드 작성 스타일과 환경 구축의 기준이 됩니다. (예: Python, Rust, Go, TypeScript)",
+        "Go",
+        "프로젝트의 주력 백엔드 언어입니다. (예: Go, Python, Rust, TypeScript)",
     )
     framework = ask(
-        "프레임워크",
-        "FastAPI",
-        "사용할 주력 프레임워크입니다. 시스템 아키텍처와 라이브러리 선택에 영향을 줍니다. (예: FastAPI, Axum, Gin, Next.js)",
+        "백엔드 프레임워크",
+        "Gin",
+        "사용할 주력 백엔드 프레임워크입니다. (예: Gin, FastAPI, Axum, Next.js)",
+    )
+    frontend_stack = ask(
+        "프런트엔드 스택",
+        "React (Vite + TS)",
+        "사용할 프런트엔드 기술 스택입니다. (예: React, Vue, Svelte, None)",
+    )
+    database = ask(
+        "데이터베이스",
+        "MySQL",
+        "사용할 데이터베이스입니다. (예: MySQL, PostgreSQL, MongoDB, SQLite)",
     )
     package_manager = ask(
-        "패키지 매니저",
-        "pip",
-        "라이브러리와 의존성을 관리할 도구입니다. (예: pip, npm, pnpm, cargo, go mod)",
-    )
-    test_tool = ask(
-        "테스트 도구",
-        "pytest",
-        "코드의 품질을 검증할 테스트 프레임워크입니다. (예: pytest, vitest, jest, go test, cargo test)",
+        "패키지 매니저 (백엔드)",
+        "go mod",
+        "백엔드 의존성 관리 도구입니다. (예: go mod, pip, cargo)",
     )
     deploy_target = ask(
         "배포 대상",
@@ -205,24 +210,24 @@ def main() -> int:
     )
 
     install_cmd = ask(
-        "설치 명령",
-        "pip install -r requirements.txt",
-        "신규 참여자가 개발 환경을 구축하기 위해 실행할 표준 명령입니다. (예: pip install -r requirements.txt, npm install)",
+        "설치 명령 (전체)",
+        "go mod download && cd frontend && npm install",
+        "개발 환경 구축을 위한 표준 명령입니다.",
     )
     dev_cmd = ask(
         "개발 실행 명령",
-        "uvicorn src.main:app --reload",
-        "로컬 환경에서 개발 서버를 띄우거나 앱을 실행할 명령입니다. (예: uvicorn src.main:app --reload, npm run dev)",
+        "docker-compose up -d && go run backend/main.go",
+        "로컬 개발 환경 실행 명령입니다.",
     )
     test_cmd = ask(
         "테스트 명령",
-        "pytest -q",
-        "전체 테스트를 실행하는 표준 명령입니다. (예: pytest -q, npm test, cargo test)",
+        "go test ./... && cd frontend && npm test",
+        "전체 테스트 실행 명령입니다.",
     )
     lint_cmd = ask(
         "린트 명령",
-        "ruff check .",
-        "코드 스타일과 문법 오류를 체크하는 명령입니다. (예: ruff check ., eslint ., cargo clippy)",
+        "go fmt ./... && cd frontend && npm run lint",
+        "코드 스타일 체크 명령입니다.",
     )
     build_cmd = ask(
         "빌드 명령",
@@ -293,9 +298,9 @@ def main() -> int:
 
 - 프로젝트명: {project_name}
 - 한 줄 요약: {summary}
-- 주요 사용자: {target_users}
+- 프로젝트 유형: AI 에이전트 협업 템플릿
 - 현재 단계: 초기 설정 완료
-- 해결하려는 문제: {problem}
+- 목표: AI 에이전트 기반 새 프로젝트를 시작할 때 재사용 가능한 기준 구조 제공
 
 ## 현재 상태
 
@@ -324,7 +329,7 @@ def main() -> int:
 ## 자동 생성 상태
 
 <!-- AUTO-GENERATED-START -->
-이 블록은 `python scripts/auto_codex_context.py` 실행 후 갱신됩니다.
+이 블록은 `python scripts/auto_context.py` 실행 후 갱신됩니다.
 <!-- AUTO-GENERATED-END -->
 
 ## 세션 메모
@@ -446,7 +451,7 @@ def main() -> int:
     print("- HARNESS.md")
     print("- scripts/check.py")
     print("\n다음 권장 명령:")
-    print("python scripts/auto_codex_context.py")
+    print("python scripts/auto_context.py")
     print("python scripts/check.py")
     return 0
 

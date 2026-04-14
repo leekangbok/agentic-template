@@ -1,16 +1,17 @@
-# AGENTS 안내
+# AI 에이전트 안내
 
-이 파일은 에이전트가 이 저장소를 빠르게 이해하기 위한 짧은 지도 역할을 합니다.
+이 문서는 AI 에이전트가 이 저장소를 빠르게 이해하기 위한 짧은 지도 역할을 합니다.
 모든 세부 지식을 이 파일에 몰아넣지 말고, 아래 문서들로 이동하는 목차로 사용하세요.
 
 ## 먼저 읽을 것
 
 1. `README.md`
 2. `WORKFLOW.md`
-3. `AI_RULES.md`
-4. `HARNESS.md`
-5. `CONTEXT.md`
-6. `TASKS.md`
+3. `docs/generated/ENV_INFO.md` (로컬 환경 정보)
+4. `AI_RULES.md` (AI 작업 수칙)
+5. `HARNESS.md`
+6. `CONTEXT.md`
+7. `TASKS.md`
 
 ## 목적별 문서 위치
 
@@ -30,6 +31,18 @@
   `docs/references/`
 - 자동 생성 자료
   `docs/generated/`
+
+## 작업 유형별 추천 스킬 (Skill Discovery)
+
+특정 유형의 작업을 시작할 때 아래 스킬 문서를 우선적으로 읽으십시오.
+
+- **UI/UX 디자인 및 프런트엔드**: `skills/frontend-design.md`, `skills/canvas-design.md`
+- **배포 및 상용화 준비**: `skills/production-ready-check.md`, `skills/error-handling-logging.md`
+- **API 개발 및 통합**: `skills/claude-api.md`, `skills/mcp-builder.md`
+- **품질 관리 및 테스트**: `skills/webapp-testing.md`, `skills/code-review-checklist.md`
+- **아키텍처 및 설계**: `skills/database-design.md`, `skills/refactoring-expert.md`
+- **보안 및 규정 준수**: `skills/security-audit.md`
+- **일반 개발 원칙**: `skills/karpathy-guidelines.md`
 
 ## 에이전트 작업 원칙
 

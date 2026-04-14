@@ -8,6 +8,18 @@ __pycache__/
 .venv/
 venv/
 
+# Node / React
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Go
+backend/main
+backend/main.exe
+backend/docs/
+
 # OS / Editor
 .DS_Store
 Thumbs.db
@@ -33,5 +45,6 @@ coverage/
 
 # Temporary workspace artifacts
 .tmp-intake-test/
-scripts/check_clean.py
-scripts/project_intake_fixed.py
+scripts/fix_readme.py
+scripts/sync_docs.py
+scripts/sync_docs_full.py

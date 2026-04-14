@@ -1,0 +1,44 @@
+name: Standard Harness Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.24'
+
+    - name: Install Go dependencies
+      run: |
+        if [ -f backend/go.mod ]; then
+          cd backend && go mod download
+        fi
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+
+    - name: Install Frontend dependencies
+      run: |
+        if [ -d frontend ]; then
+          cd frontend && npm install
+        fi
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+
+    - name: Run Standard Harness (scripts/check.py)
+      run: python scripts/check.py

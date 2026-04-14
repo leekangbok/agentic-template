@@ -1,71 +1,65 @@
-# 검증 스크립트 예시
+# 스택별 검증 스크립트 예시
 
-이 문서는 `scripts/check.py`에 어떤 명령을 넣으면 좋은지 스택별 예시를 제공합니다.
+이 문서는 `scripts/check.py`를 다양한 기술 스택에 맞춰 커스터마이징할 때 참고할 수 있는 예시들을 제공합니다.
 
-## Python 예시
+---
+
+## 1. Go (Gin/GORM) - 현재 프로젝트 표준
+
+현재 템플릿의 `scripts/check.py`에 적용된 표준 구성입니다.
 
 ```python
+# Go 기반 검증 단계 예시
 steps = [
-    ("lint", ["ruff", "check", "."]),
-    ("format-check", ["ruff", "format", "--check", "."]),
-    ("test", ["pytest", "-q"]),
+    ("backend", "go-fmt", ["go", "fmt", "./..."]),
+    ("backend", "go-vet", ["go", "vet", "./..."]),
+    ("backend", "go-test", ["go", "test", "./..."]),
+    ("backend", "go-build", ["go", "build", "-o", "main.exe", "."]),
+    # API 명세 최신화 확인 (선택 사항)
+    ("backend", "swag-init", ["swag", "init"]),
 ]
 ```
 
-## FastAPI / Python 예시
+---
+
+## 2. React (Vite/TS) - 현재 프로젝트 표준
+
+프런트엔드 프로젝트 폴더(`frontend/`)에 대한 검증 구성입니다.
 
 ```python
+# React 기반 검증 단계 예시
 steps = [
-    ("lint", ["ruff", "check", "."]),
-    ("typecheck", ["mypy", "src"]),
-    ("test", ["pytest", "-q"]),
+    ("frontend", "npm-lint", ["npm", "run", "lint"]),
+    ("frontend", "npm-build", ["npm", "run", "build"]),
 ]
 ```
 
-## Node.js / TypeScript 예시
+---
+
+## 3. Python (FastAPI/Pytest) - 기타 스택 참고용
+
+다른 프로젝트에서 Python 스택을 사용할 경우 참고하세요.
 
 ```python
+# Python 기반 검증 단계 예시
 steps = [
-    ("lint", ["npm", "run", "lint"]),
-    ("typecheck", ["npm", "run", "typecheck"]),
-    ("test", ["npm", "run", "test"]),
-    ("build", ["npm", "run", "build"]),
+    ("backend", "ruff", ["ruff", "check", "."]),
+    ("backend", "mypy", ["mypy", "src"]),
+    ("backend", "pytest", ["pytest", "tests"]),
 ]
 ```
 
-## Next.js 예시
+---
 
-```python
-steps = [
-    ("lint", ["npm", "run", "lint"]),
-    ("typecheck", ["npx", "tsc", "--noEmit"]),
-    ("test", ["npm", "run", "test"]),
-    ("build", ["npm", "run", "build"]),
-]
-```
+## 4. 기타 도구 예시
 
-## Rust 예시
+- **Docker**: `["docker-compose", "config"]`
+- **SQL Lint**: `["sqlfluff", "lint", "db/migrations"]`
+- **OpenAPI Validation**: `["openapi-spec-validator", "docs/swagger.json"]`
 
-```python
-steps = [
-    ("fmt", ["cargo", "fmt", "--check"]),
-    ("lint", ["cargo", "clippy", "--", "-D", "warnings"]),
-    ("test", ["cargo", "test"]),
-]
-```
+---
 
-## Go 예시
+## AI 에이전트 주의 사항
 
-```python
-steps = [
-    ("fmt", ["gofmt", "-w", "."]),
-    ("test", ["go", "test", "./..."]),
-]
-```
-
-## 권장 팁
-
-- 가장 빠른 검증부터 앞에 둡니다.
-- 실패 가능성이 높은 검증을 먼저 둡니다.
-- CI에서 돌리는 명령과 최대한 맞춥니다.
-- 새 명령을 추가하면 `HARNESS.md`와 `README.md`도 함께 갱신합니다.
+- 프로젝트 초기 설정(`project-intake`) 시 선택한 스택에 맞춰 `scripts/check.py`를 반드시 수동으로 검토하세요.
+- 모든 검증 단계는 `scripts/check.py`를 통해 통합 관리되는 것을 권장합니다.

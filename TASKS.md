@@ -1,21 +1,24 @@
-﻿# 작업 목록
+# 작업 목록
 
 이 파일은 다음에 해야 할 실제 작업에 집중해야 합니다. 새로운 세션이 이 파일만 열어도 무엇을 해야 하는지 바로 알 수 있어야 합니다.
 
 ## 지금
 
-- [ ] `README.md`에 실제 프로젝트명, 요약, 대상 사용자를 작성하기
-- [ ] 기술 스택과 표준 명령 정하기
-- [ ] `docs/architecture.md`의 기본 메모를 실제 구조로 교체하기
-- [ ] `HARNESS.md`에 실제 검증 전략 기록하기
-- [ ] `scripts/check.py`에 실제 lint/test/typecheck/build 명령 채우기
-- [ ] 첫 구현 대상과 첫 테스트 대상을 정의하기
-- [ ] `create-project` 스크립트가 실제 새 프로젝트 흐름에 맞는지 점검하기
+- [ ] `README.md`에 실제 프로젝트 정보를 작성하기
+    - *검증*: 육안 검토 및 `python scripts/auto_context.py` 실행 후 반영 확인
+- [ ] 기술 스택 및 `scripts/check.py` 명령 확정하기
+    - *검증*: `python scripts/check.py` 실행 시 성공 응답 확인
+- [ ] `docs/architecture.md`를 실제 모듈 구조로 갱신하기
+    - *검증*: `AGENTS.md`의 구조와 일치하는지 확인
+- [ ] `HARNESS.md`에 검증 전략 기록하기
+    - *검증*: `AI_RULES.md`의 규칙과 상호 모순 없는지 검토
+- [ ] 첫 구현 대상(backend/ API)과 프런트엔드 UI(frontend/) 정의하기
+    - *검증*: 파일 생성 후 `scripts/check.py`에서 인식되는지 확인
 
 ## 다음
 
-- [ ] `src/` 아래 첫 실제 파일 추가하기
-- [ ] `tests/` 아래 테스트를 최소 1개 추가하기
+- [ ] `backend/` 아래 첫 실제 파일 추가하기
+- [ ] `frontend/` 아래 테스트를 최소 1개 추가하기
 - [ ] 실제 실행 및 테스트 명령 문서화하기
 - [ ] 초기 리스크와 범위 제한을 `CONTEXT.md`에 기록하기
 

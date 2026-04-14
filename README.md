@@ -17,7 +17,7 @@
 - `AGENTS.md`
   에이전트를 위한 짧은 지도형 문서
 - `AI_RULES.md`
-  Codex 및 AI 에이전트가 따라야 하는 필수 운영 규칙
+  AI 에이전트가 따라야 하는 필수 운영 규칙
 - `CONTEXT.md`
   현재 프로젝트 상태, 리스크, 부족한 정보, 다음 작업
 - `TASKS.md`
@@ -26,8 +26,8 @@
   AI 개발용 검증 레일과 하네스 운영 기준
 - `WORKFLOW.md`
   실제 프로젝트 진행 절차와 세션 운영 방식
-- `.codex-start.txt`
-  Codex 세션 시작용 프롬프트
+- `startup`
+  AI 세션 시작용 프롬프트
 - `docs/architecture.md`
   아키텍처 메모, 모듈 경계, 의사결정 기록
 - `docs/exec-plans/`
@@ -40,9 +40,11 @@
   스택별 검증 스크립트 예시
 - `docs/generated/`
   자동 생성 자료
+- `docs/generated/ENV_INFO.md`
+  AI 에이전트의 환경 인식을 위한 로컬 시스템 정보 스냅샷
 - `docs/QUALITY.md`, `docs/RELIABILITY.md`, `docs/SECURITY.md`
   품질, 신뢰성, 보안 기준
-- `scripts/auto_codex_context.py`
+- `scripts/auto_context.py`
   `CONTEXT.md`의 자동 생성 상태 블록을 갱신하는 스크립트
 - `scripts/run.sh`, `scripts/run.bat`
   작업 시작 전 컨텍스트를 갱신하는 헬퍼 스크립트
@@ -54,10 +56,10 @@
   이 템플릿으로 새 프로젝트를 생성하는 스캐폴딩 스크립트
 - `scripts/create_project.py`
   새 프로젝트 생성의 실제 공통 로직
-- `src/`
-  애플리케이션 소스 코드
-- `tests/`
-  테스트 파일
+- `backend/`
+  Go (Gin) 백엔드 소스 코드
+- `frontend/`
+  React (Vite + TS) 프런트엔드 코드
 - `skills/`
   AI 에이전트 전용 스킬 및 고품질 워크플로우 가이드라인
 
@@ -79,10 +81,10 @@
 4. 새 세션을 시작하기 전에 아래 명령으로 컨텍스트를 갱신합니다.
 
 ```sh
-python scripts/auto_codex_context.py
+python scripts/auto_context.py
 ```
 
-5. `.codex-start.txt`를 Codex 세션 시작 프롬프트로 사용합니다.
+5. `startup`을 AI 세션 시작 프롬프트로 사용합니다.
 6. 코드 변경 후에는 아래 검증 하네스를 실행합니다.
 
 ```sh
@@ -112,7 +114,7 @@ sh scripts/project-intake.sh
 5. 코드 변경 후 관련 테스트나 검증을 수행합니다.
 6. 테스트가 통과한 뒤에만 다음 단계로 진행합니다.
 7. 같은 작업 안에서 관련 문서도 함께 수정합니다.
-8. `python scripts/auto_codex_context.py`를 실행합니다.
+8. `python scripts/auto_context.py`를 실행합니다.
 9. 다음 세션이 바로 이어받을 수 있도록 `TASKS.md`, `CONTEXT.md`를 정리합니다.
 
 ## 권장 운영 규칙
@@ -167,18 +169,19 @@ scripts\create-project.bat my-app
 ```
 
 원격 URL을 자동으로 찾지 못하면 두 번째 인자로 템플릿 저장소 URL을 넘기거나 `TEMPLATE_REPO_URL` 환경 변수를 사용할 수 있습니다. Windows에서는 `.bat`이 내부적으로 `PowerShell` 스크립트를 호출합니다.
-기본 설정에서는 프로젝트 생성 후 Codex를 자동 실행하지 않습니다. 생성이 끝나면 프로젝트 폴더로 이동해서 `codex`를 직접 실행하세요.
-명시적으로 자동 실행을 켜고 싶다면 `CODEX_AUTOSTART=1` 환경 변수를 사용하면 됩니다.
+기본 설정에서는 프로젝트 생성 후 AI 에이전트를 자동 실행하지 않습니다. 생성이 끝나면 프로젝트 폴더로 이동해서 사용 중인 에이전트(예: `ai-agent`, `cursor` 등)를 직접 실행하세요.
+
+명시적으로 자동 실행을 켜고 싶다면 `AI_AUTOSTART=1` 환경 변수를 사용하면 됩니다. 자동 실행할 명령어는 `AI_AGENT_CMD` 변수로 지정할 수 있습니다 (기본값: `ai-agent`).
 
 ## 기본 검증 프로필
 
-현재 `scripts/check.py`는 Python/FastAPI 스타터 프로필로 채워져 있습니다.
+현재 `scripts/check.py`는 Go/React/MySQL 풀스택 프로필로 채워져 있습니다.
 
 기본 명령:
 
-- `ruff check .`
-- `mypy src`
-- `pytest -q`
+- `go fmt ./...`
+- `go vet ./...`
+- `go test ./...`
 
 다른 스택을 사용할 경우 `docs/references/check-examples.md`를 참고해서 `scripts/check.py`를 바꾸면 됩니다.
 
@@ -189,7 +192,7 @@ scripts\create-project.bat my-app
 1. `HARNESS.md`에 검증 원칙과 완료 기준을 기록
 2. `scripts/check.*`를 표준 검증 진입점으로 사용
 3. `AI_RULES.md`에 테스트 통과 전 다음 단계 금지 규칙 명시
-4. `.codex-start.txt`에서 세션 시작 시 하네스 확인을 강제
+4. `startup`에서 세션 시작 시 하네스 확인을 강제
 5. `AGENTS.md`와 구조화된 `docs/`를 통해 필요한 지식을 분산 저장
 
 ## Windows 테스트 예시
@@ -198,10 +201,11 @@ scripts\create-project.bat my-app
 
 ```powershell
 cd C:\dev
-C:\dev\codex-template\scripts\create-project.bat my-test-app https://github.com/leekangbok/codex-project-template.git
+C:\dev\agentic-template\scripts\create-project.bat my-test-app https://github.com/leekangbok/agentic-template.git
 cd C:\dev\my-test-app
 scripts\project-intake.bat
-codex
+# 사용 중인 AI 에이전트 실행 (예: ai-agent-command)
+ai-agent-command
 ```
 
 ## 유지보수 메모

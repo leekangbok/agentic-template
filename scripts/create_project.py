@@ -83,9 +83,9 @@ def write_context(project_dir: Path, project_name: str) -> None:
 ## 현재 존재하는 것
 
 - 기본 운영 문서: `README.md`, `AI_RULES.md`, `CONTEXT.md`, `TASKS.md`
-- 세션 시작 프롬프트: `.codex-start.txt`
+- 세션 시작 프롬프트: `startup`
 - 아키텍처 문서: `docs/architecture.md`
-- 컨텍스트 갱신 스크립트: `scripts/auto_codex_context.py`
+- 컨텍스트 갱신 스크립트: `scripts/auto_context.py`
 - 실행 헬퍼 스크립트: `scripts/run.sh`, `scripts/run.bat`
 
 ## 아직 비어 있는 정보
@@ -98,19 +98,19 @@ def write_context(project_dir: Path, project_name: str) -> None:
 ## 현재 리스크
 
 - 요구사항과 우선순위가 아직 확정되지 않았음
-- 첫 구현 파일과 첫 테스트 파일이 아직 없음
+- 첫 백엔드 API와 프런트엔드 UI이 아직 없음
 
 ## 다음 권장 작업
 
 1. 요구사항을 정리합니다.
 2. 기술 스택을 결정합니다.
 3. 첫 기능 범위를 정의합니다.
-4. 첫 구현 파일과 첫 테스트 파일을 추가합니다.
+4. `backend/` 또는 `frontend/` 아래 첫 비즈니스 로직을 구현합니다.
 
 ## 자동 생성 상태
 
 <!-- AUTO-GENERATED-START -->
-이 블록은 `python scripts/auto_codex_context.py` 실행 시 갱신됩니다.
+이 블록은 `python scripts/auto_context.py` 실행 시 갱신됩니다.
 <!-- AUTO-GENERATED-END -->
 
 ## 세션 메모
@@ -135,8 +135,8 @@ def write_tasks(project_dir: Path, project_name: str) -> None:
 
 ## 다음
 
-- [ ] `src/` 아래 첫 구현 파일 추가하기
-- [ ] `tests/` 아래 첫 테스트 파일 추가하기
+- [ ] `backend/` 아래 첫 구현 파일 추가하기
+- [ ] `frontend/` 아래 첫 구현 파일 추가하기
 - [ ] 실행 및 테스트 명령 문서화하기
 
 ## 이후
@@ -159,10 +159,10 @@ def maybe_commit(project_dir: Path) -> None:
     print("첫 커밋을 생성했습니다.")
 
 
-def maybe_run_codex(project_dir: Path) -> None:
-    autostart = os.environ.get("CODEX_AUTOSTART", "0").strip()
+def maybe_run_agent(project_dir: Path) -> None:
+    autostart = os.environ.get("AI_AUTOSTART", "0").strip()
     if autostart not in {"1", "true", "True", "yes", "on"}:
-        print("기본 설정에서는 Codex 자동 실행을 하지 않습니다.")
+        print("기본 설정에서는 AI 에이전트 자동 실행을 하지 않습니다.")
         print("다음 순서로 진행하세요:")
         print(f"1. cd {project_dir}")
         print("2. 질문형 초기 설정 실행")
@@ -174,21 +174,21 @@ def maybe_run_codex(project_dir: Path) -> None:
             print("   sh scripts/project-intake.sh")
             print("3. 검증 하네스 확인")
             print("   sh scripts/check.sh")
-        print("4. Codex 실행")
-        print("   codex")
+        print("4. 사용 중인 AI 에이전트 실행 (예: ai-agent, cursor 등)")
         return
 
-    codex_path = shutil.which("codex")
-    if not codex_path:
-        print("codex 명령을 찾지 못했습니다. 필요하면 프로젝트 폴더에서 수동으로 실행하세요.")
+    agent_cmd = os.environ.get("AI_AGENT_CMD", "ai-agent").strip()
+    agent_path = shutil.which(agent_cmd)
+    if not agent_path:
+        print(f"'{agent_cmd}' 명령을 찾지 못했습니다. 필요하면 프로젝트 폴더에서 수동으로 실행하세요.")
         return
 
-    prompt = (project_dir / ".codex-start.txt").read_text(encoding="utf-8-sig")
-    print("Codex 세션을 시작합니다.")
+    prompt = (project_dir / "startup").read_text(encoding="utf-8-sig")
+    print(f"AI 에이전트 세션을 시작합니다 ({agent_cmd}).")
     try:
-        run([codex_path], cwd=project_dir, input_text=prompt)
+        run([agent_path], cwd=project_dir, input_text=prompt)
     except Exception as exc:
-        print(f"Codex 자동 실행에 실패했습니다: {exc}")
+        print(f"AI 에이전트 자동 실행에 실패했습니다: {exc}")
         print("프로젝트 생성은 완료되었습니다. 아래 순서로 수동 진행하세요:")
         print(f"1. cd {project_dir}")
         if os.name == "nt":
@@ -197,7 +197,7 @@ def maybe_run_codex(project_dir: Path) -> None:
         else:
             print("2. sh scripts/project-intake.sh")
             print("3. sh scripts/check.sh")
-        print("4. codex")
+        print(f"4. {agent_cmd}")
 
 
 def main() -> int:
@@ -230,12 +230,12 @@ def main() -> int:
     write_context(project_dir, project_name)
     write_tasks(project_dir, project_name)
 
-    run([sys.executable, "scripts/auto_codex_context.py"], cwd=project_dir)
+    run([sys.executable, "scripts/auto_context.py"], cwd=project_dir)
     run(["git", "add", "."], cwd=project_dir)
     maybe_commit(project_dir)
 
     print(f"프로젝트 생성 완료: {project_name}")
-    maybe_run_codex(project_dir)
+    maybe_run_agent(project_dir)
     return 0
 
 

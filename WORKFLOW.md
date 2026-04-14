@@ -1,4 +1,4 @@
-﻿# 프로젝트 진행 워크플로우
+# 프로젝트 진행 워크플로우
 
 이 문서는 이 템플릿으로 실제 프로젝트를 시작하고 운영하는 가장 실용적인 순서를 설명합니다.
 
@@ -38,12 +38,12 @@
 
 다음으로 생성된 `scripts/check.py`를 검토하고 프로젝트에 맞게 보강합니다.
 
-기본 스타터 프로필은 Python/FastAPI 기준입니다.
+기본 스타터 프로필은 Go/React/MySQL 기준입니다.
 필요하면 다른 스택 예시를 `docs/references/check-examples.md`에서 참고해 바꿉니다.
 
 ## 2. 세션 시작 루틴
 
-새 Codex 세션을 시작할 때는 아래 순서를 따릅니다.
+새 AI 세션을 시작할 때는 아래 순서를 따릅니다.
 
 1. `AGENTS.md`
 2. `README.md`
@@ -60,12 +60,16 @@
 
 1. `TASKS.md`에서 다음 작업 선택
 2. 관련 코드와 문서 확인
-3. 구현 또는 수정
-4. `scripts/check.*` 실행
-5. 실패 시 수정 후 재검증
-6. 검증 통과 후 관련 문서 갱신
-7. `python scripts/auto_codex_context.py` 실행
-8. `TASKS.md`, `CONTEXT.md` 정리
+3. **실행 계획 수립 (복잡한 작업의 경우)**:
+    - `docs/exec-plans/TEMPLATE.md`를 복사하여 현재 작업의 계획서 작성
+    - 사용자의 승인(Approval)을 획득
+4. 구현 또는 수정
+5. `scripts/check.*` 실행
+6. 실패 시 수정 후 재검증
+7. 검증 통과 후 관련 문서 갱신
+8. 지식 기록: 작업 중 발견된 중요한 'Why'를 `docs/references/KNOWLEDGE_BASE.md`에 기록
+9. `python scripts/auto_context.py` 실행
+10. `TASKS.md`, `CONTEXT.md` 정리
 
 ## 4. 핵심 규칙
 
@@ -121,7 +125,7 @@ AGENTS.md, WORKFLOW.md, HARNESS.md, CONTEXT.md, TASKS.md를 먼저 읽고,
 
 1. `CONTEXT.md`, `TASKS.md` 확인
 2. 오늘 작업 목표 선택
-3. Codex로 구현
+3. AI 에이전트로 구현
 4. 하네스 실행
 5. 실패 수정
 6. 통과 후 문서 정리
